@@ -1,0 +1,23 @@
+const router = require("express-promise-router")()
+const orderController = require('../controllers/order')
+const passport = require('passport')
+
+router.route('/')
+    .get(orderController.getAllOrder)
+    .post(passport.authenticate('jwt', { session: false }), orderController.addOrder)
+router.route('/revenue')
+    .get(orderController.revenue)
+router.route('/revenue-list')
+    .get(orderController.revenueList)
+router.route('/session-order')
+    .get(orderController.sessionOrder)
+router.route('/:IDOrder')
+    .get(orderController.getAnOrder)
+    .put(/* passport.authenticate('jwt', { session: false }), */ orderController.updateOrder)
+    .delete(orderController.deleteOrder)
+router.route('/email/:IDOrder')
+    .get(passport.authenticate('jwt', { session: false }), orderController.requestSendEmail)
+router.route('/confirm/:tokenOrder')
+    .get(orderController.confirmOrder)
+
+module.exports = router
